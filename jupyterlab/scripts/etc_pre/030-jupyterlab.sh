@@ -15,5 +15,4 @@ _copy_config jupyterlab-lsp.json @krassowski/jupyterlab-lsp/plugin.jupyterlab-se
 _copy_config settings.jupyterlab-settings jupyterlab_code_formatter
 
 icon fish -c
-icon nvim -c
 nvim --headless '+Lazy! install' +qa &

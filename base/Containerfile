@@ -8,13 +8,13 @@ COPY scripts /scripts
 
 RUN dnf copr enable aldantanneo/jj-vcs \
     && dnf install -y --setopt=install_weak_deps=False \
-        sudo \
-        pkgconf-pkg-config \
+        sudo pkgconf-pkg-config \
         fd-find file zip less \
         tzdata glibc-langpack-en \
         man-db \
-        git jj-cli openssh-clients \
-        rsync curl \
+        git jj-cli \
+        openssh-clients rsync curl \
+        neovim \
     && curl -sSL https://raw.githubusercontent.com/legendu-net/icon/main/install_icon.sh \
         | bash -s -- -v v0.42.0 \
     && /scripts/purge_cache.sh
@@ -24,3 +24,5 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone
 
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
+ENV EDITOR=nvim
+ENV VISUAL=nvim

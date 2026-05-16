@@ -1,11 +1,8 @@
 # NAME: legendu/jupyterlab
 FROM quay.io/legendu/python-nodejs:next
 
-ENV EDITOR=nvim
-ENV VISUAL=nvim
-
 RUN dnf install -y --setopt=install_weak_deps=False \
-        fish neovim \
+        fish \
     && /scripts/purge_cache.sh
 
 RUN pip3 install \

@@ -1,36 +1,41 @@
 #!/bin/bash
 
 # purge dnf cache
-if [[ "$(which dnf)" != "" ]]; then
+if command -v dnf &>/dev/null; then
     dnf clean all
     rm -rf /var/cache/dnf
 fi
 
 # purge apt-get cache
-if [[ "$(which apt-get)" != "" ]]; then
+if command -v apt-get &>/dev/null; then
     apt-get autoremove -y
     apt-get clean -y
 fi
 
 # purge pip cache
 for cmd in python python3; do
-    if [[ "$(which $cmd)" != "" ]]; then
+    if command -v "$cmd" &>/dev/null; then
         $cmd -m pip cache purge -qqq
     fi
 done
 
 # purge conda cache
-if [[ "$(which conda)" != "" ]]; then
+if command -v conda &>/dev/null; then
     conda clean --all --yes
 fi
 
 # purge npm cache
-if [[ "$(which npm)" != "" ]]; then
+if command -v npm &>/dev/null; then
     npm cache clean --force
 fi
 
+# purge linuxbrew cache
+if command -v brew &>/dev/null; then
+    brew cleanup --prune=all
+fi
+
 # purge cargo cache
-if [[ "$(which cargo-cache)" != "" ]]; then
+if command -v cargo-cache &>/dev/null; then
     cargo-cache --autoclean
 elif [[ -f /root/.cargo/bin/cargo-cache ]]; then
     /root/.cargo/bin/cargo-cache --autoclean

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import getpass
 import subprocess as sp
 
 
@@ -15,9 +14,7 @@ def get_jupyter_user() -> bytes:
 
 
 def main():
-    cmd = ["/scripts/sys/list_jupyter.py"]
-    if getpass.getuser() == "root":
-        cmd = ["su", get_jupyter_user(), "-c"] + cmd
+    cmd = ["/scripts/list_jupyter.py"]
     sp.run(cmd, check=True)
 
 

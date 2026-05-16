@@ -1,19 +1,7 @@
 #!/bin/bash
 # This script is for launching a JupyterLab service 
 # in situations where launch.sh in legendu/jupyterlab is overwritten (e.g., in legendu/vscode-server).
-# There are 2 popular use cases.
-# 1. Pass the CMD "/scripts/init.sh /scripts/launch_jlab.sh" to the docker command when launching a Docker container.
-# 2. Run "/scripts/launch_jlab.sh" in an already launched Docker container.
 
-#@TODO: add --collaborative when it's stable
+#/opt/venv/bin/jupyter lab --allow-root --ip='0.0.0.0' --port=8888 --no-browser --collaborative --notebook-dir=$HOME
+/opt/venv/bin/jupyter lab --allow-root --ip='0.0.0.0' --port=8888 --no-browser --notebook-dir=$HOME
 
-case "$(id -un)" in
-    root )
-        su -m $DOCKER_USER -c "/opt/venv/bin/jupyter lab --allow-root --ip='0.0.0.0' --port=8888 --no-browser --notebook-dir=$HOME"
-        ;;
-    gitpod )
-        /opt/venv/bin/jupyter lab --allow-root --ip='0.0.0.0' --port=8888 --no-browser --notebook-dir=/workspace
-        ;;
-    *)
-        /opt/venv/bin/jupyter lab --allow-root --ip='0.0.0.0' --port=8888 --no-browser --notebook-dir=$HOME
-esac

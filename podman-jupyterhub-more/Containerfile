@@ -4,7 +4,7 @@ FROM dclong/jupyterhub-jdk:next
 COPY scripts /scripts
 
 RUN dnf install -y --setopt=install_weak_deps=False fzf \
-    && /scripts/sys/purge_cache.sh
+    && /scripts/purge_cache.sh
 
 RUN npm install -g @google/gemini-cli
 
@@ -15,12 +15,12 @@ RUN curl -fsSL https://deno.land/install.sh | sh -s -- --no-modify-path -y \
     && deno jupyter --install \
     && mkdir -p /usr/local/share/jupyter/kernels/ \
     && mv /root/.local/share/jupyter/kernels/deno /usr/local/share/jupyter/kernels/ \
-    && /scripts/sys/purge_cache.sh
+    && /scripts/purge_cache.sh
 
 # Rust kernel
 ENV RUSTUP_HOME=/usr/local/rustup PATH=/usr/local/cargo/bin:$PATH
 RUN dnf install -y --setopt=install_weak_deps=False cmake \
-    && /scripts/sys/purge_cache.sh
+    && /scripts/purge_cache.sh
 COPY --from=dclong/rust-utils:next /usr/local/rustup/ /usr/local/rustup/
 COPY --from=dclong/rust-utils:next /usr/local/cargo/bin /usr/local/cargo/bin
 COPY --from=dclong/rust-utils:next /usr/bin/nperf /usr/bin/
@@ -29,7 +29,7 @@ COPY --from=dclong/rust-utils:next /root/.local/share/jupyter/kernels/rust/ /usr
 # GoLANG
 ENV PATH=/usr/local/go/bin:$PATH
 RUN icon golang -ic --copy \
-    && /scripts/sys/purge_cache.sh
+    && /scripts/purge_cache.sh
 
 # The Ganymede Java kernel
 RUN icon download_github_release -r allen-ball/ganymede -k jar -K asc -o /tmp/ganymede.jar \
@@ -37,4 +37,4 @@ RUN icon download_github_release -r allen-ball/ganymede -k jar -K asc -o /tmp/ga
     && mv /opt/venv/share/jupyter/kernels/ganymede-*-java-*/ /usr/local/share/jupyter/kernels/ \
     && sed -i 's_/opt/venv/share/jupyter/kernels/_/usr/local/share/jupyter/kernels/_g' /usr/local/share/jupyter/kernels/ganymede*/kernel.json \
     && rm -f /tmp/ganymede.jar \
-    && /scripts/sys/purge_cache.sh
+    && /scripts/purge_cache.sh

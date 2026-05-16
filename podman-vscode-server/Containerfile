@@ -2,7 +2,7 @@
 FROM dclong/jupyterhub-more:next
 
 RUN pip3 install aiutil github-rest-api \
-    && /scripts/sys/purge_cache.sh
+    && /scripts/purge_cache.sh
 
 RUN dnf install -y --setopt=install_weak_deps=False valgrind \
     && icon from_github -r coder/code-server -v ">=4.99.0,<4.118.0" -k amd64.rpm -o /tmp/code.rpm \
@@ -25,7 +25,7 @@ RUN dnf install -y --setopt=install_weak_deps=False valgrind \
     && code-server --install-extension ReneSaarsoo.sql-formatter-vsc \
     && icon vscode -c --copy --user-dir /etc/vscode/data/User/ \
     && chmod -R 777 /root/ /etc/vscode/ \
-    && /scripts/sys/purge_cache.sh
+    && /scripts/purge_cache.sh
 
 COPY scripts/ /scripts/
 

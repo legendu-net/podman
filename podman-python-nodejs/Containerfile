@@ -5,4 +5,4 @@ RUN dnf install -y --setopt=install_weak_deps=False \
         nodejs npm \
     && npm install -g n \
     && n lts \
-    && /scripts/sys/purge_cache.sh
+    && /scripts/purge_cache.sh

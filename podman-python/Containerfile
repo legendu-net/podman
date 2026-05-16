@@ -7,7 +7,7 @@ RUN dnf install -y --setopt=install_weak_deps=False \
     && /opt/venv/bin/pip3 install \
         ipython \
     && curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" sh \
-    && /scripts/sys/purge_cache.sh
+    && /scripts/purge_cache.sh
 
 ENV PATH="/opt/venv/bin:$PATH"
 

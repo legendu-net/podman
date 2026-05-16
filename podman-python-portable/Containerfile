@@ -11,4 +11,4 @@ RUN icon download_github_release -r indygreg/python-build-standalone \
     && mv /tmp/python/install /opt/python \
     && rm -f /tmp/cpython.tar.zst \
     && /opt/python/bin/python3 -m pip install -U pip \
-    && /scripts/sys/purge_cache.sh
+    && /scripts/purge_cache.sh

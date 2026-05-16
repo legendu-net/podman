@@ -6,13 +6,14 @@ ENV HISTTIMEFORMAT="[%F %T %z]  "
 
 COPY scripts /scripts
 
-RUN dnf install -y --setopt=install_weak_deps=False \
+RUN dnf copr enable aldantanneo/jj-vcs \
+    && dnf install -y --setopt=install_weak_deps=False \
         sudo \
         pkgconf-pkg-config \
         fd-find file zip less \
         tzdata glibc-langpack-en \
         man-db \
-        git openssh-clients \
+        git jj-cli openssh-clients \
         rsync curl \
     && curl -sSL https://raw.githubusercontent.com/legendu-net/icon/main/install_icon.sh \
         | bash -s -- -v v0.42.0 \

@@ -2,6 +2,6 @@
 
 icon zellij -c
 
-if [ -e "/workdir/.gemini" ]; then
-    ln -snf /workdir/.gemini ~/.gemini
+if [ -e "$HOME/.gemini" ]; then
+    ln -snf $HOME/.gemini ~/.gemini
 fi

@@ -8,5 +8,5 @@ case "$(id -un)" in
         jupyterhub -f /etc/jupyterhub/jupyterhub_config.py
         ;;
     *)
-        jupyterhub -f /etc/jupyterhub/jupyterhub_config.py --Spawner.notebook_dir=/workdir
+        jupyterhub -f /etc/jupyterhub/jupyterhub_config.py --Spawner.notebook_dir=$HOME
 esac

@@ -5,7 +5,8 @@
       "Bash(xargs sed -i 's|dclong/|quay.io/dclong/|g')",
       "Bash(xargs sed -i 's|dclong/|legendu/|g')",
       "Bash(xargs sed -i 's|FROM legendu/|FROM quay.io/legendu/|g; s|COPY --from=legendu/|COPY --from=quay.io/legendu/|g')",
-      "Bash(xargs sed -i 's|^\\\\\\(podman build -t \\\\\\(quay\\\\.io/legendu/[^ ]*\\\\\\).*\\\\\\)$|\\\\1\\\\npodman push \\\\2|')"
+      "Bash(xargs sed -i 's|^\\\\\\(podman build -t \\\\\\(quay\\\\.io/legendu/[^ ]*\\\\\\).*\\\\\\)$|\\\\1\\\\npodman push \\\\2|')",
+      "Bash(xargs sed -i 's|/workdir|$HOME|g')"
     ]
   }
 }

@@ -1,7 +1,24 @@
 #!/usr/bin/env fish
 
-argparse 'no-pull' 'no-push' 'no-cache' -- $argv
+function _show_help
+    echo "Usage: build.fish [OPTIONS]"
+    echo ""
+    echo "Build the legendu/vscode-server image from legendu/jupyterhub-more:next."
+    echo ""
+    echo "Options:"
+    echo "  --no-pull    Skip pulling quay.io/legendu/jupyterhub-more:next"
+    echo "  --no-push    Skip pushing quay.io/legendu/vscode-server:next"
+    echo "  --no-cache   Build without layer cache"
+    echo "  -h, --help   Show this help message"
+end
+
+argparse 'h/help' 'no-pull' 'no-push' 'no-cache' -- $argv
 or exit
+
+if set -q _flag_help
+    _show_help
+    exit 0
+end
 
 if not set -q _flag_no_pull
     podman pull quay.io/legendu/jupyterhub-more:next

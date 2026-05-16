@@ -1,7 +1,24 @@
 #!/usr/bin/env fish
 
-argparse 'no-pull' 'no-push' 'no-cache' -- $argv
+function _show_help
+    echo "Usage: build.fish [OPTIONS]"
+    echo ""
+    echo "Build the legendu/jupyterhub-kotlin image from legendu/jupyterhub-jdk:next."
+    echo ""
+    echo "Options:"
+    echo "  --no-pull    Skip pulling quay.io/legendu/jupyterhub-jdk:next"
+    echo "  --no-push    Skip pushing quay.io/legendu/jupyterhub-kotlin:next"
+    echo "  --no-cache   Build without layer cache"
+    echo "  -h, --help   Show this help message"
+end
+
+argparse 'h/help' 'no-pull' 'no-push' 'no-cache' -- $argv
 or exit
+
+if set -q _flag_help
+    _show_help
+    exit 0
+end
 
 if not set -q _flag_no_pull
     podman pull quay.io/legendu/jupyterhub-jdk:next

@@ -564,7 +564,7 @@ os.umask(0o002)
 # Supply overrides for terminado. Currently only supports "shell_command".
 #  Default: {}
 c.ServerApp.terminado_settings = {
-    "shell_command": "/home/linuxbrew/.linuxbrew/bin/fish",
+    "shell_command": "fish",
 }
 
 # Set to False to disable terminals.

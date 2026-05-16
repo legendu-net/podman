@@ -23,20 +23,20 @@ end
 set script_dir (realpath (dirname (status filename)))
 
 for image in \
-    podman-base \
-    podman-rust \
-    podman-rust-utils \
-    podman-rust-cicd \
-    podman-python-portable \
-    podman-python \
-    podman-python-nodejs \
-    podman-jupyterlab \
-    podman-jupyterhub \
-    podman-jupyterhub-jdk \
-    podman-jupyterhub-more \
-    podman-vscode-server \
-    podman-jupyterhub-ds \
-    podman-jupyterhub-kotlin
+    base \
+    rust \
+    rust-utils \
+    rust-cicd \
+    python-portable \
+    python \
+    python-nodejs \
+    jupyterlab \
+    jupyterhub \
+    jupyterhub-jdk \
+    jupyterhub-more \
+    vscode-server \
+    jupyterhub-ds \
+    jupyterhub-kotlin
     echo "==> Building $image"
     cd $script_dir/$image
     ./build.fish $_flag_no_pull $_flag_no_push $_flag_no_cach

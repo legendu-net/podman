@@ -1,5 +1,5 @@
 # NAME: legendu/jupyterhub
-FROM legendu/jupyterlab:next
+FROM quay.io/legendu/jupyterlab:next
 
 RUN npm install -g configurable-http-proxy \
     && pip3 install "SQLAlchemy<2.0.0" "jupyterhub<5.5.0" \

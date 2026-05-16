@@ -1,5 +1,5 @@
 # NAME: legendu/jupyterhub-kotlin
-FROM legendu/jupyterhub-jdk:next
+FROM quay.io/legendu/jupyterhub-jdk:next
 
 RUN pip3 install kotlin-jupyter-kernel \
     && /scripts/purge_cache.sh

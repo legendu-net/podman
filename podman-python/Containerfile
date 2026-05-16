@@ -1,5 +1,5 @@
 # NAME: legendu/python
-FROM legendu/base:next
+FROM quay.io/legendu/base:next
 
 RUN dnf install -y --setopt=install_weak_deps=False \
         python3-devel python3 gcc gcc-c++ make \

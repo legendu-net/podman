@@ -1,5 +1,5 @@
 # NAME: legendu/rust-utils
-FROM legendu/rust:next
+FROM quay.io/legendu/rust:next
 
 RUN rustup component add rust-src rustfmt clippy
 

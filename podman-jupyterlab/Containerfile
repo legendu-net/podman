@@ -1,5 +1,5 @@
 # NAME: legendu/jupyterlab
-FROM legendu/python-nodejs:next
+FROM quay.io/legendu/python-nodejs:next
 
 ENV EDITOR=nvim
 ENV VISUAL=nvim

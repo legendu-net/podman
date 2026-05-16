@@ -1,5 +1,5 @@
 # NAME: legendu/python-nodejs
-FROM legendu/python:next
+FROM quay.io/legendu/python:next
 
 RUN dnf install -y --setopt=install_weak_deps=False \
         nodejs npm \

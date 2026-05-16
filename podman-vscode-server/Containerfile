@@ -1,5 +1,5 @@
 # NAME: legendu/vscode-server
-FROM legendu/jupyterhub-more:next
+FROM quay.io/legendu/jupyterhub-more:next
 
 RUN pip3 install aiutil github-rest-api \
     && /scripts/purge_cache.sh

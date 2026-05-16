@@ -1,5 +1,5 @@
 # NAME: legendu/jupyterhub-more
-FROM legendu/jupyterhub-jdk:next
+FROM quay.io/legendu/jupyterhub-jdk:next
 
 COPY scripts /scripts
 
@@ -21,10 +21,10 @@ RUN curl -fsSL https://deno.land/install.sh | sh -s -- --no-modify-path -y \
 ENV RUSTUP_HOME=/usr/local/rustup PATH=/usr/local/cargo/bin:$PATH
 RUN dnf install -y --setopt=install_weak_deps=False cmake \
     && /scripts/purge_cache.sh
-COPY --from=legendu/rust-utils:next /usr/local/rustup/ /usr/local/rustup/
-COPY --from=legendu/rust-utils:next /usr/local/cargo/bin /usr/local/cargo/bin
-COPY --from=legendu/rust-utils:next /usr/bin/nperf /usr/bin/
-COPY --from=legendu/rust-utils:next /root/.local/share/jupyter/kernels/rust/ /usr/local/share/jupyter/kernels/rust/
+COPY --from=quay.io/legendu/rust-utils:next /usr/local/rustup/ /usr/local/rustup/
+COPY --from=quay.io/legendu/rust-utils:next /usr/local/cargo/bin /usr/local/cargo/bin
+COPY --from=quay.io/legendu/rust-utils:next /usr/bin/nperf /usr/bin/
+COPY --from=quay.io/legendu/rust-utils:next /root/.local/share/jupyter/kernels/rust/ /usr/local/share/jupyter/kernels/rust/
 
 # GoLANG
 ENV PATH=/usr/local/go/bin:$PATH

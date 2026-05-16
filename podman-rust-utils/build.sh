@@ -1,3 +1,3 @@
 #!/bin/bash
 
-podman build -t dclong/rust-utils:next .
+podman build -t quay.io/dclong/rust-utils:next .

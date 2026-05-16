@@ -1,3 +1,3 @@
 #!/bin/bash
 
-podman build -t dclong/python-nodejs:next .
+podman build -t quay.io/dclong/python-nodejs:next .

@@ -1,4 +1,4 @@
 #!/bin/bash
 
-podman pull dclong/base:next
-podman build -t dclong/rust:next .
+podman pull quay.io/dclong/base:next
+podman build -t quay.io/dclong/rust:next .

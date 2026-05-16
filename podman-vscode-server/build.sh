@@ -1,5 +1,5 @@
 #!/bin/bash
 
-podman pull dclong/jupyterhub-more:next
-podman build -t dclong/vscode-server:next .
-#podman build --no-cache -t dclong/vscode-server:next .
+podman pull quay.io/dclong/jupyterhub-more:next
+podman build -t quay.io/dclong/vscode-server:next .
+#podman build --no-cache -t quay.io/dclong/vscode-server:next .

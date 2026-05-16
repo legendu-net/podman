@@ -1,4 +1,5 @@
 # NAME: dclong/base
+#FROM registry.fedoraproject.org/fedora-toolbox:latest
 FROM fedora-toolbox:latest
 
 SHELL ["/bin/bash", "-O", "extglob", "-c"]

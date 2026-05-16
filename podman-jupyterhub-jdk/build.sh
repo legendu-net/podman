@@ -1,3 +1,3 @@
 #!/bin/bash
 
-podman build -t dclong/jupyterhub-jdk:next .
+podman build -t quay.io/dclong/jupyterhub-jdk:next .

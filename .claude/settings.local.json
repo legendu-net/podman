@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(xargs sed -i 's|scripts/sys/|scripts/|g')"
+      "Bash(xargs sed -i 's|scripts/sys/|scripts/|g')",
+      "Bash(xargs sed -i 's|dclong/|quay.io/dclong/|g')"
     ]
   }
 }

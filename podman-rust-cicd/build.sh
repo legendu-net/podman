@@ -1,4 +1,4 @@
 #!/bin/bash
 
-podman build -t dclong/rust-cicd:next .
-#podman build --no-cache -t dclong/rust-cicd:next .
+podman build -t quay.io/dclong/rust-cicd:next .
+#podman build --no-cache -t quay.io/dclong/rust-cicd:next .

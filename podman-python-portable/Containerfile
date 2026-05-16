@@ -1,5 +1,5 @@
-# NAME: dclong/python-portable
-FROM dclong/base:next
+# NAME: legendu/python-portable
+FROM legendu/base:next
 
 COPY scripts/ /scripts/
 RUN icon download_github_release -r indygreg/python-build-standalone \

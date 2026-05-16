@@ -1,4 +1,4 @@
-# NAME: dclong/base
+# NAME: legendu/base
 #FROM registry.fedoraproject.org/fedora-toolbox:latest
 FROM fedora-toolbox:latest
 

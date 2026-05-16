@@ -1,3 +1,3 @@
 #!/bin/bash
 
-podman build . -t quay.io/dclong/base:next
+podman build . -t quay.io/legendu/base:next

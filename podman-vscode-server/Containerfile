@@ -1,5 +1,5 @@
-# NAME: dclong/vscode-server
-FROM dclong/jupyterhub-more:next
+# NAME: legendu/vscode-server
+FROM legendu/jupyterhub-more:next
 
 RUN pip3 install aiutil github-rest-api \
     && /scripts/purge_cache.sh

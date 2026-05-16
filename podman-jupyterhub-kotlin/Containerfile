@@ -1,5 +1,5 @@
-# NAME: dclong/jupyterhub-kotlin
-FROM dclong/jupyterhub-jdk:next
+# NAME: legendu/jupyterhub-kotlin
+FROM legendu/jupyterhub-jdk:next
 
 RUN pip3 install kotlin-jupyter-kernel \
     && /scripts/purge_cache.sh

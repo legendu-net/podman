@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script is for launching a JupyterHub service
-# in situations where launch.sh in dclong/jupyterhub is overwritten (e.g., in dclong/vscode-server).
+# in situations where launch.sh in legendu/jupyterhub is overwritten (e.g., in legendu/vscode-server).
 
 cd $HOME
 case "$(id -un)" in

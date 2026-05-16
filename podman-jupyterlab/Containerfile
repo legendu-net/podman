@@ -1,5 +1,5 @@
-# NAME: dclong/jupyterlab
-FROM dclong/python-nodejs:next
+# NAME: legendu/jupyterlab
+FROM legendu/python-nodejs:next
 
 ENV EDITOR=nvim
 ENV VISUAL=nvim

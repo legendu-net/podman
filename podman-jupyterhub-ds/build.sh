@@ -1,4 +1,4 @@
 #!/bin/bash
 
-podman pull quay.io/dclong/jupyterhub-more:next
-podman build -t quay.io/dclong/jupyterhub-ds:next .
+podman pull quay.io/legendu/jupyterhub-more:next
+podman build -t quay.io/legendu/jupyterhub-ds:next .

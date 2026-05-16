@@ -1,5 +1,5 @@
-# NAME: dclong/rust-utils
-FROM dclong/rust:next
+# NAME: legendu/rust-utils
+FROM legendu/rust:next
 
 RUN rustup component add rust-src rustfmt clippy
 

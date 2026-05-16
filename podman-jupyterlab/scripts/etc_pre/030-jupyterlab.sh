@@ -15,6 +15,6 @@ _copy_config jupyterlab-lsp.json @krassowski/jupyterlab-lsp/plugin.jupyterlab-se
 _copy_config settings.jupyterlab-settings jupyterlab_code_formatter
 chown -R $DOCKER_USER:$DOCKER_GROUP $HOME/.jupyter
 
-su -m $DOCKER_USER -c "icon fish -c"
-su -m $DOCKER_USER -c "icon nvim -c"
-su -m $DOCKER_USER -c "nvim --headless '+Lazy! install' +qa" &
+icon fish -c
+icon nvim -c
+nvim --headless '+Lazy! install' +qa &

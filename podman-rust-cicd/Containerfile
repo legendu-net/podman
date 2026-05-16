@@ -1,7 +1,8 @@
 # NAME: legendu/rust-cicd
 FROM quay.io/legendu/python:next
 
-RUN pip3 install github-rest-api
+RUN pip3 install github-rest-api \
+    && /scripts/purge_cache.sh
 
 ENV RUSTUP_HOME=/usr/local/rustup PATH=/usr/local/cargo/bin:$PATH
 COPY --from=quay.io/legendu/rust:next /usr/local/rustup/ /usr/local/rustup/

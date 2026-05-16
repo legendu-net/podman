@@ -1,7 +1,8 @@
 # NAME: legendu/rust-utils
 FROM quay.io/legendu/rust:next
 
-RUN rustup component add rust-src rustfmt clippy
+RUN rustup component add rust-src rustfmt clippy \
+    && /scripts/purge_cache.sh
 
 RUN RUSTFLAGS="-C strip=symbols" cargo install --locked \
         sccache cargo-binstall \
@@ -10,13 +11,16 @@ RUN RUSTFLAGS="-C strip=symbols" cargo install --locked \
         zellij \
         ripgrep rip2 bat du-dust eza \
         gitui git-delta git-leave gitql \
-        stork-search
+        stork-search \
+    && /scripts/purge_cache.sh
 
 RUN cargo-binstall -y evcxr_jupyter \
-    && evcxr_jupyter --install
+    && evcxr_jupyter --install \
+    && /scripts/purge_cache.sh
 
 RUN git clone --depth=1 https://github.com/koute/not-perf.git /tmp/not-perf \
     && cd /tmp/not-perf/cli \
     && cargo build --release \
     && cp ../target/release/nperf /usr/bin/ \
-    && rm -rf /tmp/not-perf
+    && rm -rf /tmp/not-perf \
+    && /scripts/purge_cache.sh

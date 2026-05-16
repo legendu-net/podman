@@ -6,7 +6,9 @@ COPY scripts /scripts
 RUN dnf install -y --setopt=install_weak_deps=False fzf \
     && /scripts/purge_cache.sh
 
-RUN npm install -g @google/gemini-cli
+RUN npm install -g @google/gemini-cli \
+    && curl -fsSL https://claude.ai/install.sh | bash \
+    && /scripts/purge_cache.sh
 
 # Deno
 RUN curl -fsSL https://deno.land/install.sh | sh -s -- --no-modify-path -y \

@@ -20,5 +20,3 @@ RUN pip3 install \
     && /scripts/purge_cache.sh
 
 COPY settings/proxychains.conf /etc/proxychains.conf
-
-EXPOSE 5006

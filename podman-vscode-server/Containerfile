@@ -30,4 +30,3 @@ RUN dnf install -y --setopt=install_weak_deps=False valgrind \
 COPY scripts/ /scripts/
 
 ENV SHELL=/bin/bash
-EXPOSE 8080

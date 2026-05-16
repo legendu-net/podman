@@ -1,57 +1,5 @@
 """Configuration file for jupyterhub."""
 
-import sys
-import os
-from pathlib import Path
-
-
-def get_mem_total() -> int:
-    with Path("/proc/meminfo").open("r", encoding="utf-8") as fin:
-        for line in fin:
-            if line.startswith("MemTotal:"):
-                mem = (
-                    line[9:]
-                    .strip()
-                    .replace(" ", "")
-                    .upper()
-                    .replace("GB", "0" * 9)
-                    .replace("MB", "0" * 6)
-                    .replace("KB", "0" * 3)
-                    .replace("B", "")
-                )
-                if mem.isdigit():
-                    return int(mem)
-    return sys.maxsize
-
-
-def get_mem_limit() -> int:
-    mem_limit = get_mem_total()
-    paths = [
-        Path("/sys/fs/cgroup/memory/memory.limit_in_bytes"),
-        Path("/sys/fs/cgroup/memory.max"),
-    ]
-    for path in paths:
-        if path.is_file():
-            mem_limit_cgroup = path.read_text(encoding="utf-8").strip()
-            if mem_limit_cgroup.isdigit():
-                mem_limit_cgroup = int(mem_limit_cgroup)
-                mem_limit = min(mem_limit, mem_limit_cgroup)
-    return mem_limit
-
-
-def get_cpu_limit() -> float:
-    cpu_limit = os.cpu_count()
-    path = Path("/sys/fs/cgroup/cpu.max")
-    if path.is_file():
-        cpu_limit_cgroup = path.read_text(encoding="utf-8").strip().split()
-        if len(cpu_limit_cgroup) == 2 and all(
-            val.isdigit() for val in cpu_limit_cgroup
-        ):
-            cpu_limit_cgroup = [int(val) for val in cpu_limit_cgroup]
-            cpu_limit = min(cpu_limit, cpu_limit_cgroup[0] / cpu_limit_cgroup[1])
-    return cpu_limit
-
-
 # ------------------------------------------------------------------------------
 # Application(SingletonConfigurable) configuration
 # ------------------------------------------------------------------------------
@@ -98,17 +46,6 @@ c.JupyterHub.admin_access = True
 
 # Answer yes to any questions (e.g. confirm overwrite)
 # c.JupyterHub.answer_yes = False
-
-# PENDING DEPRECATION: consider using service_tokens
-#
-#  Dict of token:username to be loaded into the database.
-#
-#  Allows ahead-of-time generation of API tokens for use by externally managed
-#  services, which authenticate as JupyterHub users.
-#
-#  Consider using service_tokens for general services that talk to the JupyterHub
-#  API.
-# c.JupyterHub.api_tokens = {}
 
 # Class for authenticating users.
 #
@@ -438,7 +375,6 @@ c.JupyterHub.port = 8000
 #
 #  This needs to be supported by your spawner for it to work.
 # c.ServerApp.ResourceUseDisplay.track_cpu_percent = True
-# c.Spawner.cpu_limit = get_cpu_limit()
 
 # Enable debug-logging of the single-user server
 # c.Spawner.debug = False
@@ -474,8 +410,6 @@ c.Spawner.default_url = "/lab"
 c.Spawner.env_keep = [
     "PATH",
     "PYTHONPATH",
-    "CONDA_ROOT",
-    "CONDA_DEFAULT_ENV",
     "VIRTUAL_ENV",
     "LANG",
     "LC_ALL",
@@ -540,10 +474,6 @@ c.Spawner.env_keep = [
 #  fail. There is no guarantee that the single-user notebook server will be able
 #  to allocate this much memory - only that it can not allocate more than this.
 #
-#  This needs to be supported by your spawner for it to work.
-c.Spawner.mem_limit = get_mem_limit()
-# c.SystemdSpawner.mem_limit = '6G'
-# c.SystemdSpawner.mem_limit = 'USER_MEM_LIMIT'
 
 # Path to the notebook directory for the single-user server.
 #
@@ -556,7 +486,7 @@ c.Spawner.mem_limit = get_mem_limit()
 #
 #  Note that this does *not* prevent users from accessing files outside of this
 #  path! They can do so with many other means.
-c.Spawner.notebook_dir = "/workdir"
+#c.Spawner.notebook_dir = "/workdir"
 
 # An HTML form for options a user can specify on launching their server.
 #

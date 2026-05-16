@@ -1,5 +1,12 @@
 #!/usr/bin/env fish
 
-podman pull quay.io/legendu/python-nodejs:next
+argparse 'no-pull' 'no-push' -- $argv
+or exit
+
+if not set -q _flag_no_pull
+    podman pull quay.io/legendu/python-nodejs:next
+end
 podman build -t quay.io/legendu/jupyterlab:next .
-podman push quay.io/legendu/jupyterlab:next
+if not set -q _flag_no_push
+    podman push quay.io/legendu/jupyterlab:next
+end

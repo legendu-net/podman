@@ -1,6 +1,13 @@
 #!/usr/bin/env fish
 
-podman pull quay.io/legendu/jupyterhub-jdk:next
+argparse 'no-pull' 'no-push' -- $argv
+or exit
+
+if not set -q _flag_no_pull
+    podman pull quay.io/legendu/jupyterhub-jdk:next
+end
 podman build -t quay.io/legendu/jupyterhub-more:next .
 #podman build --no-cache -t quay.io/legendu/jupyterhub-more:next .
-podman push quay.io/legendu/jupyterhub-more:next
+if not set -q _flag_no_push
+    podman push quay.io/legendu/jupyterhub-more:next
+end

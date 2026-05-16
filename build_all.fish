@@ -20,7 +20,7 @@ if set -q _flag_help
     exit 0
 end
 
-set script_dir (dirname (status filename))
+set script_dir (realpath (dirname (status filename)))
 
 for image in \
     podman-base \

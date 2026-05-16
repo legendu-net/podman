@@ -1,6 +1,5 @@
 # NAME: legendu/base
-#FROM registry.fedoraproject.org/fedora-toolbox:latest
-FROM fedora-toolbox:latest
+FROM registry.fedoraproject.org/fedora-toolbox:latest
 
 SHELL ["/bin/bash", "-O", "extglob", "-c"]
 ENV HISTTIMEFORMAT="[%F %T %z]  "

@@ -1,0 +1,9 @@
+{
+  "shortcuts": [
+    {
+      "command": "filebrowser:open-path",
+      "keys": ["Ctrl Shift O"],
+      "selector": "body"
+    }
+  ]
+}

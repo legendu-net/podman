@@ -1,0 +1,15 @@
+{
+  "language_servers": {
+    "pylsp": {
+      "serverSettings": {
+        "pylsp.plugins.pylint.enabled": true,
+        "pylsp.plugins.pytype.enabled": true,
+        "pylsp.plugins.yapf.enabled": true,
+        "pylsp.plugins.pydocstyle.enabled": false,
+        "pylsp.plugins.pycodestyle.enabled": false,
+        "pylsp.plugins.pyflakes.enabled": false,
+        "pylsp.plugins.flake8.enabled": false
+      }
+    }
+  }
+}

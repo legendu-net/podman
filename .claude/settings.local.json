@@ -8,7 +8,10 @@
       "Bash(xargs sed -i 's|^\\\\\\(podman build -t \\\\\\(quay\\\\.io/legendu/[^ ]*\\\\\\).*\\\\\\)$|\\\\1\\\\npodman push \\\\2|')",
       "Bash(xargs sed -i 's|/workdir|$HOME|g')",
       "Bash(xargs ls -la)",
-      "Bash(chmod +x *)"
+      "Bash(chmod +x *)",
+      "Bash(jj log *)",
+      "Bash(jj config *)",
+      "Bash(jj bookmark *)"
     ]
   }
 }

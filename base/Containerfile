@@ -14,7 +14,7 @@ RUN dnf copr enable aldantanneo/jj-vcs \
         man-db \
         git jj-cli \
         openssh-clients rsync curl \
-        neovim \
+        neovim fish \
     && curl -sSL https://raw.githubusercontent.com/legendu-net/icon/main/install_icon.sh \
         | bash -s -- -v v0.42.0 \
     && /scripts/purge_cache.sh

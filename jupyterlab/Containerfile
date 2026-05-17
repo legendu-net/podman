@@ -1,10 +1,6 @@
 # NAME: legendu/jupyterlab
 FROM quay.io/legendu/python-nodejs:next
 
-RUN dnf install -y --setopt=install_weak_deps=False \
-        fish \
-    && /scripts/purge_cache.sh
-
 RUN pip3 install \
         nbdime jinja2 nbconvert "jupyterlab>=2.1.0,<4.6.0" \
         jupyterlab_widgets ipywidgets jupyterlab_myst \

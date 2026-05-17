@@ -2,3 +2,4 @@
 
 icon git -c
 icon nvim -c
+icon fish -c

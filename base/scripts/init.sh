@@ -11,7 +11,15 @@ function _config() {
     done
 }
 
+function _launch() {
+    local script=/scripts/launch.sh
+    if [[ -f $script ]]; then
+        echo "Launching application service using the script $script ..."
+        $script &
+    fi
+}
+
 _config pre
-/scripts/launch.sh &
+_launch
 _config post
 

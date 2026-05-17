@@ -1,0 +1,22 @@
+# NAME: dclong/rust-utils
+FROM dclong/rust:next
+
+RUN rustup component add rust-src rustfmt clippy
+
+RUN RUSTFLAGS="-C strip=symbols" cargo install --locked \
+        sccache cargo-binstall \
+    && cargo-binstall -y --locked \
+        cargo-cache cargo-edit cargo-criterion \
+        zellij \
+        ripgrep rip2 bat du-dust eza \
+        gitui git-delta git-leave gitql \
+        stork-search
+
+RUN cargo-binstall -y evcxr_jupyter \
+    && evcxr_jupyter --install
+
+RUN git clone --depth=1 https://github.com/koute/not-perf.git /tmp/not-perf \
+    && cd /tmp/not-perf/cli \
+    && cargo build --release \
+    && cp ../target/release/nperf /usr/bin/ \
+    && rm -rf /tmp/not-perf

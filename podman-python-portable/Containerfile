@@ -1,0 +1,14 @@
+# NAME: dclong/python-portable
+FROM dclong/base:next
+
+COPY scripts/ /scripts/
+RUN icon download_github_release -r indygreg/python-build-standalone \
+        -k 3.10,x86_64-,unknown,linux,gnu,pgo,lto,full,tar,zst \
+        -K debug,sha256 \
+        -o /tmp/cpython.tar.zst \
+    && dnf install -y --setopt=install_weak_deps=False zstd \
+    && tar -I zstd -xvf /tmp/cpython.tar.zst -C /tmp/ \
+    && mv /tmp/python/install /opt/python \
+    && rm -f /tmp/cpython.tar.zst \
+    && /opt/python/bin/python3 -m pip install -U pip \
+    && /scripts/sys/purge_cache.sh

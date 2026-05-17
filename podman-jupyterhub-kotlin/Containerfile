@@ -1,0 +1,5 @@
+# NAME: dclong/jupyterhub-kotlin
+FROM dclong/jupyterhub-jdk:next
+
+RUN pip3 install kotlin-jupyter-kernel \
+    && /scripts/sys/purge_cache.sh

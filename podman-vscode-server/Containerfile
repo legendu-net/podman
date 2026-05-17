@@ -1,0 +1,33 @@
+# NAME: dclong/vscode-server
+FROM dclong/jupyterhub-more:next
+
+RUN pip3 install aiutil github-rest-api \
+    && /scripts/sys/purge_cache.sh
+
+RUN dnf install -y --setopt=install_weak_deps=False valgrind \
+    && icon from_github -r coder/code-server -v ">=4.99.0,<4.118.0" -k amd64.rpm -o /tmp/code.rpm \
+    && rpm -i /tmp/code.rpm \
+    && rm -f /tmp/code.rpm \
+    && code-server --install-extension Google.geminicodeassist \
+    && code-server --install-extension google.gemini-cli-vscode-ide-companion \
+    && code-server --install-extension anthropic.claude-code \
+    && code-server --install-extension asvetliakov.vscode-neovim@1.18.24 \
+    && code-server --install-extension mechatroner.rainbow-csv \
+    && code-server --install-extension usernamehw.errorlens \
+    && code-server --install-extension ms-python.python \
+    && code-server --install-extension golang.Go \
+    && code-server --install-extension njpwerner.autodocstring \
+    && code-server --install-extension rust-lang.rust-analyzer \
+    && code-server --install-extension serayuzgur.crates \
+    && code-server --install-extension vadimcn.vscode-lldb \
+    && code-server --install-extension fwcd.kotlin \
+    && code-server --install-extension karsten7.mojo-vscode \
+    && code-server --install-extension ReneSaarsoo.sql-formatter-vsc \
+    && icon vscode -c --copy --user-dir /etc/vscode/data/User/ \
+    && chmod -R 777 /root/ /etc/vscode/ \
+    && /scripts/sys/purge_cache.sh
+
+COPY scripts/ /scripts/
+
+ENV SHELL=/bin/bash
+EXPOSE 8080

@@ -1,0 +1,14 @@
+# NAME: dclong/python
+FROM dclong/base:next
+
+RUN dnf install -y --setopt=install_weak_deps=False \
+        python3-devel python3 gcc gcc-c++ make \
+    && python3 -m venv /opt/venv \
+    && /opt/venv/bin/pip3 install \
+        ipython \
+    && curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" sh \
+    && /scripts/sys/purge_cache.sh
+
+ENV PATH="/opt/venv/bin:$PATH"
+
+COPY scripts/ /scripts/

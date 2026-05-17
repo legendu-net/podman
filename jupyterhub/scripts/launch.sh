@@ -1,3 +1,4 @@
 #!/bin/bash
 
-jupyterhub -f /etc/jupyterhub/jupyterhub_config.py
+mkdir -p ~/.local/share/jupyterhub/
+jupyterhub -f /etc/jupyterhub/jupyterhub_config.py > ~/.local/share/jupyterhub/jhub.log

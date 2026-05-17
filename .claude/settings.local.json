@@ -11,7 +11,10 @@
       "Bash(chmod +x *)",
       "Bash(jj log *)",
       "Bash(jj config *)",
-      "Bash(jj bookmark *)"
+      "Bash(jj bookmark *)",
+      "Bash(podman image *)",
+      "Bash(podman kill *)",
+      "Bash(podman ps *)"
     ]
   }
 }

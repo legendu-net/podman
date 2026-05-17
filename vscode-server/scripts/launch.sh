@@ -7,4 +7,4 @@ export PASSWORD="$(id -un)" && /usr/bin/code-server \
     --extensions-dir /usr/local/share/code-server/extensions \
     --disable-telemetry \
     --auth password \
-    $HOME/ > ~/.local/share/code-server/code-server.log
+    $HOME/ > ~/.local/share/code-server/code-server.log 2>&1

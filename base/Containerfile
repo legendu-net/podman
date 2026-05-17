@@ -1,12 +1,9 @@
 # NAME: legendu/base
 FROM registry.fedoraproject.org/fedora-toolbox:latest
 
-SHELL ["/bin/bash", "-O", "extglob", "-c"]
-ENV HISTTIMEFORMAT="[%F %T %z]  "
-
 COPY scripts /scripts
 
-RUN dnf copr enable aldantanneo/jj-vcs \
+RUN dnf copr enable -y aldantanneo/jj-vcs \
     && dnf install -y --setopt=install_weak_deps=False \
         sudo pkgconf-pkg-config \
         fd-find file zip less \

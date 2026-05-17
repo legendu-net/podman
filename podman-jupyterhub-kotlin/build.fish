@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env fish
 
 podman pull quay.io/legendu/jupyterhub-jdk:next
 podman build -t quay.io/legendu/jupyterhub-kotlin:next .

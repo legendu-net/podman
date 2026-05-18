@@ -39,6 +39,6 @@ for image in \
     jupyterhub-kotlin
     echo "==> Building $image"
     cd $script_dir/$image
-    ./build.fish $_flag_no_pull $_flag_no_push $_flag_no_cach
+    ./build.fish $_flag_no_pull $_flag_no_push $_flag_no_cache
     or exit
 end

@@ -1,4 +1,3 @@
-# NAME: legendu/jupyterlab
 FROM quay.io/legendu/python-nodejs:next
 
 RUN pip3 install \

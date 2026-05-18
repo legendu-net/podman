@@ -1,4 +1,3 @@
-# NAME: legendu/vscode-server
 FROM quay.io/legendu/jupyterhub-more:next
 
 RUN pip3 install aiutil github-rest-api \

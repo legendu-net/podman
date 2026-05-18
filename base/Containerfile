@@ -1,4 +1,3 @@
-# NAME: legendu/base
 FROM registry.fedoraproject.org/fedora-toolbox:latest
 
 COPY scripts /scripts

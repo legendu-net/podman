@@ -41,4 +41,5 @@ for image in \
     cd $script_dir/$image
     ./build.fish $_flag_no_pull $_flag_no_push $_flag_no_cache
     or exit
+    printf "\n\n"
 end

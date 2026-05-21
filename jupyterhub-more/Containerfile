@@ -1,4 +1,3 @@
-# NAME: legendu/jupyterhub-more
 FROM quay.io/legendu/jupyterhub-jdk:next
 
 COPY scripts /scripts

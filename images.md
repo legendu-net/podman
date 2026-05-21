@@ -1,0 +1,14 @@
+base
+rust
+rust-utils
+rust-cicd
+python-portable
+python
+python-nodejs
+jupyterlab
+jupyterhub
+jupyterhub-jdk
+jupyterhub-more
+vscode-server
+jupyterhub-ds
+jupyterhub-kotlin

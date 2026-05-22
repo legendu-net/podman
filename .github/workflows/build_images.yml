@@ -29,10 +29,10 @@ jobs:
       - name: Install uv
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sudo env UV_INSTALL_DIR="/usr/local/bin" sh
-      - name: Store Podman Images on /mnt/podman
-        run: |
-          curl -sSL https://raw.githubusercontent.com/legendu-net/github_actions_scripts/main/container/config_container.py \
-            | sudo uv run --script -
+      #- name: Store Podman Images on /mnt/podman
+      #  run: |
+      #    curl -sSL https://raw.githubusercontent.com/legendu-net/github_actions_scripts/main/container/config_container.py \
+      #      | sudo uv run --script -
       - name: Show Podman Images Before Building
         run: podman images
       - name: Build Podman Images

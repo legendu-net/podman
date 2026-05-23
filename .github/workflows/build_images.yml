@@ -37,6 +37,8 @@ jobs:
       - name: Build Podman Images
         run: |
           uvx --from github_rest_api@latest build_container_images \
+            --file-image-dirs images.md \
+            --paths-monitoring images.md .github/workflow/build_images.yml \
             --commit1 "${{ github.event.before }}" \
             --commit2 "${{ github.event.after }}"
       - name: Show Podman Images After Building

@@ -16,9 +16,11 @@ jobs:
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Update the Version of icon
         run: |
-          curl -sSL https://raw.githubusercontent.com/legendu-net/github_actions_scripts/main/container/update_version_containerfile.py \
-            | uv run --script - \
+          uvx --from github_rest_api@latest update_version_containerfile \
             --containerfile base/Containerfile \
             --repo legendu-net/icon \
+            --pattern '-v v?\d+\.\d+\.\d+' \
+            --replace '-v v{version}' \
             --token ${{ secrets.GITHUBACTIONS }}
+
 

@@ -31,14 +31,12 @@ jobs:
           curl -LsSf https://astral.sh/uv/install.sh | sudo env UV_INSTALL_DIR="/usr/local/bin" sh
       #- name: Store Podman Images on /mnt/podman
       #  run: |
-      #    curl -sSL https://raw.githubusercontent.com/legendu-net/github_actions_scripts/main/container/config_container.py \
-      #      | sudo uv run --script -
+      #    uvx --from github_rest_api@latest config_container podman
       - name: Show Podman Images Before Building
         run: podman images
       - name: Build Podman Images
         run: |
-          curl -sSL https://raw.githubusercontent.com/legendu-net/github_actions_scripts/main/container/build_podman_images.py \
-            | uv run --script - \
+          uvx --from github_rest_api@latest build_podman_images \
             --commit1 "${{ github.event.before }}" \
             --commit2 "${{ github.event.after }}"
       - name: Show Podman Images After Building

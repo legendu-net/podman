@@ -16,9 +16,11 @@ jobs:
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Update the Version of code-server
         run: |
-          curl -sSL https://raw.githubusercontent.com/legendu-net/github_actions_scripts/main/container/update_version_containerfile.py \
-            | uv run --script - \
+          uvx --from github_rest_api@latest update_version_containerfile \
             --containerfile vscode-server/Containerfile \
             --repo coder/code-server \
+            --pattern '-v v?\d+\.\d+\.\d+' \
+            --next_minor_or_strip_patch 3 \
+            --replace '-v v{version}' \
             --token ${{ secrets.GITHUBACTIONS }}
 

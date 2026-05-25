@@ -6,4 +6,4 @@ mkdir -p ~/.local/share/jupyterlab/
     --ip='0.0.0.0' \
     --port=8888 \
     --no-browser \
-    --notebook-dir=$HOME > ~/.local/share/jupyterlab/jlab.log
+    --notebook-dir=$HOME > ~/.local/share/jupyterlab/jlab.log 2>&1

@@ -1,4 +1,3 @@
-# NAME: legendu/jupyterhub-kotlin
 FROM quay.io/legendu/jupyterhub-jdk:next
 
 RUN pip3 install kotlin-jupyter-kernel \

@@ -1,0 +1,26 @@
+name: Update the Version of JupyterHub
+on:
+  schedule:
+    - cron: '0 10 * * *'
+      timezone: 'America/Los_Angeles'
+jobs:
+  update-version-jupyterhub:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Update the Version of JupyterHub
+        run: |
+          uvx --from github_rest_api@latest update_version_containerfile \
+            --containerfile jupyterhub/Containerfile \
+            --repo jupyterhub/jupyterhub \
+            --pattern 'jupyterhub<\d+\.\d+\.0' \
+            --next_minor_or_strip_patch 3 \
+            --replace 'jupyterhub<{version}' \
+            --token ${{ secrets.GITHUBACTIONS }}
+

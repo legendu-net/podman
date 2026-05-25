@@ -1,4 +1,3 @@
-# NAME: legendu/python
 FROM quay.io/legendu/base:next
 
 RUN dnf install -y --setopt=install_weak_deps=False \

@@ -1,4 +1,3 @@
-# NAME: legendu/rust-cicd
 FROM quay.io/legendu/python:next
 
 RUN pip3 install github-rest-api \

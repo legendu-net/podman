@@ -1,4 +1,3 @@
-# NAME: legendu/jupyterhub
 FROM quay.io/legendu/jupyterlab:next
 
 RUN npm install -g configurable-http-proxy \

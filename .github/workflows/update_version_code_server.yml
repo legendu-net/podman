@@ -16,7 +16,7 @@ jobs:
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Update the Version of code-server
         run: |
-          uvx --from github_rest_api@latest update_version_containerfile \
+          uvx --from github-rest-api@latest update_version_containerfile \
             --containerfile vscode-server/Containerfile \
             --repo coder/code-server \
             --pattern '-v v?\d+\.\d+\.\d+' \

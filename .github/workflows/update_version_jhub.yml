@@ -16,7 +16,7 @@ jobs:
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Update the Version of JupyterHub
         run: |
-          uvx --from github_rest_api@latest update_version_containerfile \
+          uvx --from github-rest-api@latest update_version_containerfile \
             --containerfile jupyterhub/Containerfile \
             --repo jupyterhub/jupyterhub \
             --pattern 'jupyterhub<\d+\.\d+\.0' \

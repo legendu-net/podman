@@ -31,12 +31,12 @@ jobs:
           curl -LsSf https://astral.sh/uv/install.sh | sudo env UV_INSTALL_DIR="/usr/local/bin" sh
       #- name: Store Podman Images on /mnt/podman
       #  run: |
-      #    uvx --from github_rest_api@latest config_container podman
+      #    uvx --from github-rest-api@latest config_container podman
       - name: Show Podman Images Before Building
         run: podman images
       - name: Build Podman Images
         run: |
-          uvx --from github_rest_api@latest build_container_images \
+          uvx --from github-rest-api@latest build_container_images \
             --yaml-image-dirs images.yml \
             --paths-monitoring images.yml .github/workflows/build_images.yml \
             --commit1 "${{ github.event.before }}" \

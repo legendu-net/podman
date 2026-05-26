@@ -16,7 +16,7 @@ jobs:
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Update the Version of JupyterLab
         run: |
-          uvx --from github_rest_api@latest update_version_containerfile \
+          uvx --from github-rest-api@latest update_version_containerfile \
             --containerfile jupyterlab/Containerfile \
             --repo jupyterlab/jupyterlab \
             --pattern ',<\d+\.\d+\.0' \

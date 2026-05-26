@@ -2,10 +2,7 @@ FROM quay.io/legendu/jupyterhub-jdk:next
 
 COPY scripts /scripts
 
-RUN dnf install -y --setopt=install_weak_deps=False fzf \
-    && /scripts/purge_cache.sh
-
-RUN npm install -g @google/gemini-cli \
+RUN dnf install -y --setopt=install_weak_deps=False fzf gopass age \
     && /scripts/purge_cache.sh
 
 # Deno

@@ -7,20 +7,6 @@ RUN dnf install -y --setopt=install_weak_deps=False valgrind \
     && icon from_github -r coder/code-server -v ">=4.99.0,<4.118.0" -k amd64.rpm -o /tmp/code.rpm \
     && rpm -i /tmp/code.rpm \
     && rm -f /tmp/code.rpm \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension Google.geminicodeassist \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension anthropic.claude-code \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension asvetliakov.vscode-neovim@1.18.24 \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension mechatroner.rainbow-csv \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension usernamehw.errorlens \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension ms-python.python \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension golang.Go \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension njpwerner.autodocstring \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension rust-lang.rust-analyzer \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension serayuzgur.crates \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension vadimcn.vscode-lldb \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension fwcd.kotlin \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension karsten7.mojo-vscode \
-    && code-server --extensions-dir /usr/local/share/code-server/extensions --install-extension ReneSaarsoo.sql-formatter-vsc \
     && icon vscode -c --copy --user-dir /etc/vscode/data/User/ \
     && chmod -R 777 /root/ /etc/vscode/ \
     && /scripts/purge_cache.sh

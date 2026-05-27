@@ -3,12 +3,28 @@ FROM quay.io/legendu/jupyterhub-more:next
 RUN pip3 install aiutil github-rest-api \
     && /scripts/purge_cache.sh
 
+ARG DATA_DIR=/etc/code-server/data
 RUN dnf install -y --setopt=install_weak_deps=False valgrind \
     && icon from_github -r coder/code-server -v ">=4.99.0,<4.118.0" -k amd64.rpm -o /tmp/code.rpm \
     && rpm -i /tmp/code.rpm \
     && rm -f /tmp/code.rpm \
-    && icon vscode -c --copy --user-dir /etc/vscode/data/User/ \
-    && chmod -R 777 /root/ /etc/vscode/ \
+    && icon vscode -c --copy --user-dir $DATA_DIR/User/ \
+    && code-server --user-data-dir $DATA_DIR \
+        --install-extension Google.geminicodeassist \
+        --install-extension anthropic.claude-code \
+        --install-extension asvetliakov.vscode-neovim@1.18.24 \
+        --install-extension mechatroner.rainbow-csv \
+        --install-extension usernamehw.errorlens \
+        --install-extension ms-python.python \
+        --install-extension golang.Go \
+        --install-extension njpwerner.autodocstring \
+        --install-extension rust-lang.rust-analyzer \
+        --install-extension serayuzgur.crates \
+        --install-extension vadimcn.vscode-lldb \
+        --install-extension fwcd.kotlin \
+        --install-extension karsten7.mojo-vscode \
+        --install-extension ReneSaarsoo.sql-formatter-vsc \
+    && chmod -R 777 $DATA_DIR \
     && /scripts/purge_cache.sh
 
 COPY scripts/ /scripts/

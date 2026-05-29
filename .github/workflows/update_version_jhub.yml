@@ -20,7 +20,7 @@ jobs:
             --containerfile jupyterhub/Containerfile \
             --repo jupyterhub/jupyterhub \
             --pattern 'jupyterhub<\d+\.\d+\.0' \
-            --next_minor_or_strip_patch 3 \
+            --next-minor-or-strip-patch 3 \
             --replace 'jupyterhub<{version}' \
             --token ${{ secrets.GITHUBACTIONS }}
 

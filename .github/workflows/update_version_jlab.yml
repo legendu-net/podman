@@ -20,7 +20,7 @@ jobs:
             --containerfile jupyterlab/Containerfile \
             --repo jupyterlab/jupyterlab \
             --pattern ',<\d+\.\d+\.0' \
-            --next_minor_or_strip_patch 3 \
+            --next-minor-or-strip-patch 3 \
             --replace ',<{version}' \
             --token ${{ secrets.GITHUBACTIONS }}
 

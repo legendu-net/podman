@@ -15,7 +15,7 @@ function _launch() {
     local script=/scripts/launch.sh
     if [[ -f $script ]]; then
         echo "Launching application service using the script $script ..."
-        $script &
+        nohup $script > /dev/null 2>&1 &
     fi
 }
 

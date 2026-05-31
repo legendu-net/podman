@@ -20,7 +20,7 @@ jobs:
             --containerfile vscode-server/Containerfile \
             --repo coder/code-server \
             --pattern '-v v?\d+\.\d+\.\d+' \
-            --next_minor_or_strip_patch 3 \
+            --next-minor-or-strip-patch 3 \
             --replace '-v v{version}' \
             --token ${{ secrets.GITHUBACTIONS }}
 

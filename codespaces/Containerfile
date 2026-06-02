@@ -1,0 +1,6 @@
+FROM quay.io/legendu/jupyterhub-more:next
+
+# Add a user named vscode with passwordless sudo
+RUN useradd --create-home --shell /bin/bash vscode \
+    && echo "vscode ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/vscode \
+    && chmod 0440 /etc/sudoers.d/vscode

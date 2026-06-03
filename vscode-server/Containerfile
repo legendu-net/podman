@@ -16,10 +16,12 @@ RUN dnf install -y --setopt=install_weak_deps=False valgrind \
         --install-extension mechatroner.rainbow-csv \
         --install-extension usernamehw.errorlens \
         --install-extension ms-python.python \
+        --install-extension charliermarsh.ruff \
+        --install-extension astral-sh.ty \
         --install-extension golang.Go \
         --install-extension njpwerner.autodocstring \
         --install-extension rust-lang.rust-analyzer \
-        --install-extension serayuzgur.crates \
+        --install-extension fill-labs.dependi \
         --install-extension vadimcn.vscode-lldb \
         --install-extension fwcd.kotlin \
         --install-extension karsten7.mojo-vscode \

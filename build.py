@@ -35,9 +35,9 @@ def parse_args():
     group.add_argument(
         "-y",
         "--yaml-image-dirs",
-        default="images.yml",
+        default="images.yaml",
         metavar="YAML",
-        help="Path to a YAML file (images.yml by default) containing a list of image dirs.",
+        help="Path to a YAML file (images.yaml by default) containing a list of image dirs.",
     )
     return parser.parse_args()
 

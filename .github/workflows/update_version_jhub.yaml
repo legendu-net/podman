@@ -22,5 +22,5 @@ jobs:
             --pattern 'jupyterhub<\d+\.\d+\.0' \
             --next-minor-or-strip-patch 3 \
             --replace 'jupyterhub<{version}' \
-            --token ${{ secrets.GITHUBACTIONS }}
+            --token ${{ secrets.ACTIONS_TOKEN }}
 

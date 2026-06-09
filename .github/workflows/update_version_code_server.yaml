@@ -22,5 +22,5 @@ jobs:
             --pattern '-v v?\d+\.\d+\.\d+' \
             --next-minor-or-strip-patch 3 \
             --replace '-v v{version}' \
-            --token ${{ secrets.GITHUBACTIONS }}
+            --token ${{ secrets.ACTIONS_TOKEN }}
 

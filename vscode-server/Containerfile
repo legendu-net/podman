@@ -1,6 +1,6 @@
 FROM quay.io/legendu/jupyterhub-more:next
 
-RUN pip3 install aiutil github-rest-api \
+RUN pip3 install 'aiutil[jupyter]>=0.97' 'github_rest_api>=0.39.1' \
     && /scripts/purge_cache.sh
 
 ARG DATA_DIR=/etc/code-server/data

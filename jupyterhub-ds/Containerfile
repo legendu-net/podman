@@ -15,7 +15,7 @@ RUN pip3 install \
         tabulate \
         'JPype1>=0.7.0' sqlparse \
         requests[socks] lxml notifiers \
-        aiutil[jupyter] github_rest_api \
+        'aiutil[jupyter]>=0.97' 'github_rest_api>=0.39.1' \
     && /scripts/purge_cache.sh
 
 COPY settings/proxychains.conf /etc/proxychains.conf

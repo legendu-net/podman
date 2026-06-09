@@ -30,7 +30,7 @@ def parse_args():
         "--image-dirs",
         nargs="+",
         metavar="IMAGE_DIR",
-        help="Explicit list of image dirs to build.",
+        help="Explicit list of image dirs to build. Relative paths (e.g., '.') are supported",
     )
     group.add_argument(
         "-y",

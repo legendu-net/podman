@@ -16,5 +16,5 @@ jobs:
             | uv run --script - \
             --head-branch dev \
             --base-branch main \
-            --token ${{ secrets.GITHUBACTIONS }}
+            --token ${{ secrets.ACTIONS_TOKEN }}
 

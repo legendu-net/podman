@@ -16,4 +16,4 @@ jobs:
             | uv run --script - \
             --repo ${{ github.repository }} \
             --pattern '^(?!(main|dev)$)' \
-            --token ${{ secrets.GITHUBACTIONS }}
+            --token ${{ secrets.ACTIONS_TOKEN }}

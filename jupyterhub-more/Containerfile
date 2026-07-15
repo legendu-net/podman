@@ -2,7 +2,11 @@ FROM quay.io/legendu/jupyterhub-jdk:next
 
 COPY scripts /scripts
 
-RUN dnf install -y --setopt=install_weak_deps=False fzf gopass age \
+RUN dnf install -y --setopt=install_weak_deps=False \
+        fzf \
+        gopass age \
+        gh \
+        valgrind \
     && /scripts/purge_cache.sh
 
 # Deno

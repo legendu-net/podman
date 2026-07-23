@@ -12,7 +12,7 @@ RUN dnf copr enable -y aldantanneo/jj-vcs \
         openssh-clients rsync curl \
         neovim fish \
     && curl -sSL https://raw.githubusercontent.com/legendu-net/icon/main/install_icon.sh \
-        | bash -s -- -v v0.47.0 \
+        | bash -s -- -v v0.48.0 \
     && /scripts/purge_cache.sh
 
 ARG TZ=America/Los_Angeles

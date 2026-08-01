@@ -10,7 +10,7 @@ RUN pip3 install \
         loguru pysnooper \
         numpy scipy polars pandas 'pyarrow>=0.14.0' \
         scikit-learn lightgbm \
-        google-genai \
+        google-genai litellm==1.83.7 \
         graphviz matplotlib bokeh holoviews[recommended] hvplot pyviz_comms \
         tabulate \
         'JPype1>=0.7.0' sqlparse \

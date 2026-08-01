@@ -1,0 +1,14 @@
+{
+    "codeCellConfig": {
+        "lineNumbers": true,
+        "lineWrap": false
+    },
+    "markdownCellConfig": {
+        "lineNumbers": true,
+        "matchBrackets": false
+    },
+    "rawCellConfig": {
+        "lineNumbers": true,
+        "matchBrackets": false
+    }
+}

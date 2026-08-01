@@ -1,4 +1,6 @@
+# ruff: noqa: F821  # `c` is injected by JupyterHub when this file is exec'd
 """Configuration file for jupyterhub."""
+
 import getpass
 
 # ------------------------------------------------------------------------------

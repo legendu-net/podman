@@ -1,9 +1,11 @@
 - base
 - rust
 - rust-utils
-- rust-cicd
 # - python-portable
 - python
+# rust-cicd is FROM python:next despite the name (it also COPY --from rust and
+# rust-utils), so it belongs here rather than with the other rust-* images.
+- rust-cicd
 - python-nodejs
 - jupyterlab
 - jupyterhub

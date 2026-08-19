@@ -15,6 +15,12 @@ RUN dnf copr enable -y aldantanneo/jj-vcs \
         | bash -s -- -v v0.49.0 \
     && /scripts/purge_cache.sh
 
+# Ghostty sets TERM=xterm-ghostty; Fedora's ncurses-term ships `ghostty` but not
+# `xterm-ghostty`. tic's "alias ghostty multiply defined" warning is expected.
+COPY ghostty.terminfo /tmp/ghostty.terminfo
+RUN tic -x -o /usr/share/terminfo /tmp/ghostty.terminfo \
+    && rm -f /tmp/ghostty.terminfo
+
 ARG TZ=America/Los_Angeles
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone

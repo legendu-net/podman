@@ -1,7 +1,7 @@
 FROM quay.io/legendu/python-nodejs:next
 
 RUN uv pip install --no-cache --python /opt/venv/bin/python3 \
-        nbdime jinja2 nbconvert "jupyterlab>=4.0.0,<4.6.0" euporie \
+        nbdime jinja2 nbconvert "jupyterlab>=4.0.0,<4.7.0" euporie \
         jupyterlab_widgets ipywidgets jupyterlab_myst \
         jupyterlab-lsp python-lsp-server[all] \
         jupyterlab-code-formatter ruff \

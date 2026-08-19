@@ -1,0 +1,9 @@
+name: Create PR From dev To main
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  create_pr_dev_to_main:
+    uses: legendu-net/.github/.github/workflows/create-pr-dev-to-main.yaml@main
+    secrets: inherit

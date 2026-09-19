@@ -85,7 +85,7 @@ def build_image(
         for dep in dep_images:
             if dep in images_built:
                 continue
-            result = subprocess.run(["podman", "pull", dep])
+            result = subprocess.run(["podman", "pull", dep], check=False)
             if result.returncode != 0:
                 sys.exit(result.returncode)
 
@@ -93,12 +93,12 @@ def build_image(
     if no_cache:
         build_cmd.append("--no-cache")
     build_cmd += ["-t", tag, "."]
-    result = subprocess.run(build_cmd, cwd=image_dir)
+    result = subprocess.run(build_cmd, cwd=image_dir, check=False)
     if result.returncode != 0:
         sys.exit(result.returncode)
 
     if not no_push:
-        result = subprocess.run(["podman", "push", tag])
+        result = subprocess.run(["podman", "push", tag], check=False)
         if result.returncode != 0:
             sys.exit(result.returncode)
 

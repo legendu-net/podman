@@ -12,5 +12,5 @@ RUN uv pip install --no-cache --python /opt/venv/bin/python3 \
     && /scripts/purge_cache.sh
 
 COPY scripts /scripts
-COPY settings/*jupyterlab-* /settings/
+COPY settings/user-settings /settings/user-settings/
 COPY settings/jupyter_server_config.py /etc/jupyter/

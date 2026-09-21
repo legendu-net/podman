@@ -3,6 +3,9 @@ FROM quay.io/legendu/rust:next
 RUN rustup component add rust-src rustfmt clippy \
     && /scripts/purge_cache.sh
 
+# stylua, lychee, and selene are Rust-implemented lint tools; lint/Containerfile
+# and jupyterhub-more/Containerfile COPY --from them here instead of
+# installing their own.
 RUN RUSTFLAGS="-C strip=symbols" cargo install --locked \
         sccache cargo-binstall \
     && cargo-binstall -y --locked \
@@ -12,6 +15,7 @@ RUN RUSTFLAGS="-C strip=symbols" cargo install --locked \
         ripgrep rip2 bat du-dust eza \
         gitui git-delta git-leave gitql \
         stork-search \
+        stylua lychee selene \
     && /scripts/purge_cache.sh
 
 RUN cargo-binstall -y evcxr_jupyter \

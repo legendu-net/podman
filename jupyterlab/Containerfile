@@ -7,7 +7,6 @@ RUN uv pip install --no-cache --python /opt/venv/bin/python3 \
         jupyterlab-code-formatter ruff \
         jupyterlab_vim \
         jupyter-resource-usage \
-        jupyter_ai \
     && jupyter labextension disable @axlair/jupyterlab_vim \
     && /scripts/purge_cache.sh
 

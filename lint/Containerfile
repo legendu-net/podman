@@ -1,0 +1,112 @@
+# syntax=docker/dockerfile:1
+#
+# One image with `lint_repo` (from github-rest-api) and every tool it needs,
+# for CI: a single `docker run`/`podman run` covers a repo regardless of
+# which languages it mixes.
+#
+# NOTE: `lint_repo` isn't in a github-rest-api release yet. Until one ships,
+# `uv tool install github-rest-api` below installs everything else fine but
+# leaves `lint_repo` off PATH, so this image's ENTRYPOINT won't run. Nothing
+# else here needs changing once it does ship.
+#
+# Tools with no PyPI package and no Rust implementation are copied from their
+# own official image, so a version bump is a one-line ARG change. Versions
+# are pinned deliberately: a floating tag lets an upstream formatting or lint
+# change turn a previously green branch red without anything here having
+# changed.
+#
+# ruff, ty, mdformat, codespell, and github-rest-api are all plain Python
+# packages, so they're installed the same way instead: `uv tool install`,
+# using this (Fedora) base's own system Python -- no separate Python runtime
+# needed.
+#
+# rustfmt, stylua, lychee, and selene are Rust binaries built once in this
+# repo's own rust-utils image and copied in from there instead of installed
+# here (rust-cicd does the same for rustfmt; jupyterhub-more does the same
+# for all four). That trades their version pins for one less
+# toolchain/compile per image, and means lint must build after rust-utils in
+# images.yaml.
+ARG SHFMT_VERSION=3.13.1
+ARG SHELLCHECK_VERSION=0.11.0
+ARG GOLANGCI_LINT_VERSION=v2.6.2
+
+FROM docker.io/mvdan/shfmt:v${SHFMT_VERSION} AS shfmt
+FROM docker.io/koalaman/shellcheck:v${SHELLCHECK_VERSION} AS shellcheck
+# Also the source of Go itself: its own Go toolchain is statically linked,
+# so it runs fine copied into this (glibc) image, and it saves installing a
+# second Go toolchain of our own.
+FROM docker.io/golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine AS golangci-lint
+
+# fedora-minimal rather than this repo's usual quay.io/legendu/base:next:
+# lint is a CI-only image with no interactive use, so it has no use for
+# fedora-toolbox's sudo/jj-cli/neovim/man-db/ssh-client bulk (base:next is
+# ~1.1GB; this is ~140MB). Same Fedora release, so copying rustfmt/stylua/
+# lychee/selene in from rust-utils (also Fedora, see below) is exactly as
+# safe as it would be from base:next -- identical glibc either way.
+FROM registry.fedoraproject.org/fedora-minimal:latest
+ARG UV_VERSION=0.9.7
+
+ENV PATH=/usr/local/go/bin:/usr/local/cargo/bin:$PATH \
+    RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo
+
+# curl, ca-certificates, sh, and coreutils (mkdir/chmod/rm/env) come with
+# fedora-minimal already, pulled in transitively by dnf5 itself. python3 and
+# fish (needed to at least syntax-check fish scripts, the same role
+# shellcheck/shfmt play for bash) don't, and neither do tar/gzip, which the
+# uv installer needs to unpack its own release archive. There's no
+# /scripts/purge_cache.sh here (that's base:next's own script), so caches
+# are cleaned inline instead.
+RUN dnf install -y --setopt=install_weak_deps=False python3 fish tar gzip \
+    && curl -LsSf "https://astral.sh/uv/${UV_VERSION}/install.sh" \
+        | env UV_INSTALL_DIR="/usr/local/bin" sh \
+    && dnf clean all \
+    && rm -rf /var/cache/dnf /tmp/* /var/tmp/*
+
+COPY --from=shfmt /bin/shfmt /usr/local/bin/shfmt
+COPY --from=shellcheck /bin/shellcheck /usr/local/bin/shellcheck
+COPY --from=golangci-lint /usr/local/go /usr/local/go
+COPY --from=golangci-lint /usr/bin/golangci-lint /usr/local/bin/golangci-lint
+
+# rustfmt only ever needs to format-check here, not compile, so just the
+# rustup-managed toolchain and its proxy binaries are copied in -- no C
+# toolchain required. stylua, lychee, and selene are plain standalone
+# binaries, so they need no rustup/toolchain support -- just the binary
+# itself.
+COPY --from=quay.io/legendu/rust-utils:next /usr/local/rustup/ /usr/local/rustup/
+COPY --from=quay.io/legendu/rust-utils:next /usr/local/cargo/bin/rustfmt /usr/local/cargo/bin/rustfmt
+COPY --from=quay.io/legendu/rust-utils:next /usr/local/cargo/bin/cargo-fmt /usr/local/cargo/bin/cargo-fmt
+COPY --from=quay.io/legendu/rust-utils:next /usr/local/cargo/bin/stylua /usr/local/cargo/bin/stylua
+COPY --from=quay.io/legendu/rust-utils:next /usr/local/cargo/bin/lychee /usr/local/cargo/bin/lychee
+COPY --from=quay.io/legendu/rust-utils:next /usr/local/cargo/bin/selene /usr/local/cargo/bin/selene
+
+# Everything uv writes to lives under /tmp or /opt rather than a real user's
+# $HOME, and is left world-writable: rootful docker, rootless podman, and
+# rootless podman with `--userns=keep-id` (an arbitrary, non-root UID) all
+# need to write here.
+ENV HOME=/tmp \
+    UV_CACHE_DIR=/tmp/uv-cache \
+    UV_TOOL_DIR=/opt/uv-tools \
+    UV_TOOL_BIN_DIR=/usr/local/bin
+RUN mkdir -p "$UV_TOOL_DIR" "$UV_CACHE_DIR" \
+    && chmod -R 777 "$UV_TOOL_DIR" "$UV_CACHE_DIR" /tmp
+
+ARG RUFF_VERSION=0.14.10
+ARG TY_VERSION=0.0.14
+ARG MDFORMAT_VERSION=0.7.22
+ARG MDFORMAT_GFM_VERSION=0.4.1
+ARG MDFORMAT_FRONTMATTER_VERSION=2.0.8
+ARG CODESPELL_VERSION=2.4.1
+RUN uv tool install "ruff==${RUFF_VERSION}" \
+    && uv tool install "ty==${TY_VERSION}" \
+    && uv tool install "mdformat==${MDFORMAT_VERSION}" \
+        --with "mdformat-gfm==${MDFORMAT_GFM_VERSION}" \
+        --with "mdformat-frontmatter==${MDFORMAT_FRONTMATTER_VERSION}" \
+    && uv tool install "codespell==${CODESPELL_VERSION}"
+
+# Left unpinned, matching how github-rest-api is installed elsewhere in this
+# repo (jupyterhub-more, jupyterhub-ds, rust-cicd): always the latest release.
+RUN uv tool install github-rest-api
+
+WORKDIR /workspace
+ENTRYPOINT ["lint_repo"]

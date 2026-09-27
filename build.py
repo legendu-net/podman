@@ -6,11 +6,23 @@
 # ///
 
 import argparse
+import re
 import subprocess
 import sys
 from pathlib import Path
 
 import yaml
+
+_ARG_RE = re.compile(r"^ARG\s+([A-Za-z_][A-Za-z0-9_]*)(?:=(.*))?$", re.IGNORECASE)
+_VAR_RE = re.compile(r"\$\{([A-Za-z_][A-Za-z0-9_]*)\}|\$([A-Za-z_][A-Za-z0-9_]*)")
+
+
+def _expand_args(value: str, build_args: dict[str, str]) -> str:
+    def repl(m: re.Match) -> str:
+        name = m.group(1) or m.group(2)
+        return build_args.get(name, m.group(0))
+
+    return _VAR_RE.sub(repl, value)
 
 
 def parse_args():
@@ -56,13 +68,34 @@ def _load_image_dirs(args) -> list[str]:
 
 def _parse_containerfile(image_dir: Path) -> list[str]:
     cf = image_dir / "Containerfile"
+    lines = cf.read_text().splitlines()
+
+    build_args: dict[str, str] = {}
+    for line in lines:
+        m = _ARG_RE.match(line.strip())
+        if m and m.group(2) is not None:
+            build_args[m.group(1)] = m.group(2).strip().strip('"')
+
+    stage_aliases: set[str] = set()
     images = []
-    for line in cf.read_text().splitlines():
+    for line in lines:
         upper = line.upper()
         if upper.startswith("FROM "):
-            images.append(next(p for p in line.split()[1:] if not p.startswith("--")))
+            parts = line.split()
+            base = _expand_args(
+                next(p for p in parts[1:] if not p.startswith("--")), build_args
+            )
+            if len(parts) >= 3 and parts[-2].upper() == "AS":
+                stage_aliases.add(parts[-1])
+            if "$" not in base:
+                images.append(base)
         elif upper.startswith("COPY --FROM="):
-            images.append(line.split("=", 1)[1].split()[0])
+            name = line.split("=", 1)[1].split()[0]
+            if name in stage_aliases:
+                continue
+            name = _expand_args(name, build_args)
+            if "$" not in name:
+                images.append(name)
     if not images:
         raise ValueError(f"Containerfile in {image_dir} is missing FROM")
     return images

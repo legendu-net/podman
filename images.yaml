@@ -1,10 +1,14 @@
 - base
 - rust
 - rust-utils
+# lint copies rustfmt from rust-utils above; every other FROM/COPY --from is
+# an external image, so that's its only ordering dependency in this repo.
+- lint
 # - python-portable
 - python
-# rust-cicd is FROM python:next despite the name (it also COPY --from rust and
-# rust-utils), so it belongs here rather than with the other rust-* images.
+# rust-cicd is FROM python:next despite the name (it also COPY --from
+# rust-utils, which already depends on rust), so it belongs here rather than
+# with the other rust-* images.
 - rust-cicd
 - python-nodejs
 - jupyterlab

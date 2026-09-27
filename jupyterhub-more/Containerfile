@@ -19,7 +19,7 @@ RUN curl -fsSL https://deno.land/install.sh | sh -s -- --no-modify-path -y \
     && /scripts/purge_cache.sh
 
 # Rust kernel
-ENV RUSTUP_HOME=/usr/local/rustup PATH=/usr/local/cargo/bin:$PATH
+ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo PATH=/usr/local/cargo/bin:$PATH
 RUN dnf install -y --setopt=install_weak_deps=False cmake \
     && /scripts/purge_cache.sh
 COPY --from=quay.io/legendu/rust-utils:next /usr/local/rustup/ /usr/local/rustup/
@@ -38,4 +38,27 @@ RUN icon download_github_release -r allen-ball/ganymede -k jar -K asc -o /tmp/ga
     && mv /opt/venv/share/jupyter/kernels/ganymede-*-java-*/ /usr/local/share/jupyter/kernels/ \
     && sed -i 's_/opt/venv/share/jupyter/kernels/_/usr/local/share/jupyter/kernels/_g' /usr/local/share/jupyter/kernels/ganymede*/kernel.json \
     && rm -f /tmp/ganymede.jar \
+    && /scripts/purge_cache.sh
+
+# Lint tools for `lint_repo` (github-rest-api), for local use in this
+# toolbox. golangci-lint itself isn't installed here: `icon golang` above
+# already puts its own (newer) golangci-lint on PATH ahead of Fedora's,
+# which would otherwise just pull in a second, unused Go toolchain as a
+# dependency for nothing.
+#
+# shellcheck and shfmt are copied from their own official images instead of
+# reinstalled here, matching lint/Containerfile. stylua, lychee, and selene
+# need no separate copy: they're Rust binaries already picked up by the
+# `cargo/bin` copy in the Rust kernel section above, since rust-utils
+# installs them too.
+ARG SHELLCHECK_VERSION=0.11.0
+ARG SHFMT_VERSION=3.13.1
+COPY --from=docker.io/koalaman/shellcheck:v${SHELLCHECK_VERSION} /bin/shellcheck /usr/local/bin/shellcheck
+COPY --from=docker.io/mvdan/shfmt:v${SHFMT_VERSION} /bin/shfmt /usr/local/bin/shfmt
+
+RUN pip3 install \
+        github_rest_api \
+        mdformat mdformat-gfm mdformat-frontmatter \
+        codespell \
+        ty \
     && /scripts/purge_cache.sh

@@ -51,13 +51,14 @@ ENV PATH=/usr/local/go/bin:/usr/local/cargo/bin:$PATH \
     CARGO_HOME=/usr/local/cargo
 
 # curl, ca-certificates, sh, and coreutils (mkdir/chmod/rm/env) come with
-# fedora-minimal already, pulled in transitively by dnf5 itself. python3 and
+# fedora-minimal already, pulled in transitively by dnf5 itself. python3,
 # fish (needed to at least syntax-check fish scripts, the same role
-# shellcheck/shfmt play for bash) don't, and neither do tar/gzip, which the
-# uv installer needs to unpack its own release archive. There's no
+# shellcheck/shfmt play for bash), and git (lint_repo needs it to diff/inspect
+# the repo it's linting) don't, and neither do tar/gzip, which the uv
+# installer needs to unpack its own release archive. There's no
 # /scripts/purge_cache.sh here (that's base:next's own script), so caches
 # are cleaned inline instead.
-RUN dnf install -y --setopt=install_weak_deps=False python3 fish tar gzip \
+RUN dnf install -y --setopt=install_weak_deps=False python3 fish tar gzip git \
     && curl -LsSf "https://astral.sh/uv/${UV_VERSION}/install.sh" \
         | env UV_INSTALL_DIR="/usr/local/bin" sh \
     && dnf clean all \

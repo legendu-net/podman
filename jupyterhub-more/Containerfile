@@ -56,9 +56,16 @@ ARG SHFMT_VERSION=3.13.1
 COPY --from=docker.io/koalaman/shellcheck:v${SHELLCHECK_VERSION} /bin/shellcheck /usr/local/bin/shellcheck
 COPY --from=docker.io/mvdan/shfmt:v${SHFMT_VERSION} /bin/shfmt /usr/local/bin/shfmt
 
+# Versions pinned to match lint/Containerfile, so this toolbox's lint tools
+# don't drift from what CI uses.
+ARG TY_VERSION=0.0.14
+ARG MDFORMAT_VERSION=0.7.22
+ARG MDFORMAT_GFM_VERSION=0.4.1
+ARG MDFORMAT_FRONTMATTER_VERSION=2.0.8
+ARG CODESPELL_VERSION=2.4.1
 RUN pip3 install \
         github_rest_api \
-        mdformat mdformat-gfm mdformat-frontmatter \
-        codespell \
-        ty \
+        "mdformat==${MDFORMAT_VERSION}" "mdformat-gfm==${MDFORMAT_GFM_VERSION}" "mdformat-frontmatter==${MDFORMAT_FRONTMATTER_VERSION}" \
+        "codespell==${CODESPELL_VERSION}" \
+        "ty==${TY_VERSION}" \
     && /scripts/purge_cache.sh

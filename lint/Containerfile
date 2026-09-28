@@ -69,12 +69,13 @@ COPY --from=shellcheck /bin/shellcheck /usr/local/bin/shellcheck
 COPY --from=golangci-lint /usr/local/go /usr/local/go
 COPY --from=golangci-lint /usr/bin/golangci-lint /usr/local/bin/golangci-lint
 
-# rustfmt only ever needs to format-check here, not compile, so just the
-# rustup-managed toolchain and its proxy binaries are copied in -- no C
-# toolchain required. stylua, lychee, and selene are plain standalone
-# binaries, so they need no rustup/toolchain support -- just the binary
-# itself.
+# cargo/rustfmt need no C toolchain here since they only format-check or
+# run `cargo check` against already-vendored/pure-Rust crates, not link
+# anything -- so just the rustup-managed toolchain and its proxy binaries
+# are copied in. stylua, lychee, and selene are plain standalone binaries,
+# so they need no rustup/toolchain support -- just the binary itself.
 COPY --from=quay.io/legendu/rust-utils:next /usr/local/rustup/ /usr/local/rustup/
+COPY --from=quay.io/legendu/rust-utils:next /usr/local/cargo/bin/cargo /usr/local/cargo/bin/cargo
 COPY --from=quay.io/legendu/rust-utils:next /usr/local/cargo/bin/rustfmt /usr/local/cargo/bin/rustfmt
 COPY --from=quay.io/legendu/rust-utils:next /usr/local/cargo/bin/cargo-fmt /usr/local/cargo/bin/cargo-fmt
 COPY --from=quay.io/legendu/rust-utils:next /usr/local/cargo/bin/stylua /usr/local/cargo/bin/stylua

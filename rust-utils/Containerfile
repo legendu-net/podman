@@ -6,7 +6,8 @@ RUN rustup component add rust-src rustfmt clippy \
 # stylua, lychee, and selene are Rust-implemented lint tools; lint/Containerfile
 # and jupyterhub-more/Containerfile COPY --from them here instead of
 # installing their own.
-RUN OPENSSL_NO_VENDOR=1 RUSTFLAGS="-C strip=symbols" cargo install --locked \
+ENV OPENSSL_NO_VENDOR=1
+RUN RUSTFLAGS="-C strip=symbols" cargo install --locked \
         sccache cargo-binstall \
     && cargo-binstall -y --locked \
         cargo-cache cargo-edit cargo-criterion \

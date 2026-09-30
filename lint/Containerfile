@@ -9,33 +9,29 @@
 # leaves `lint_repo` off PATH, so this image's ENTRYPOINT won't run. Nothing
 # else here needs changing once it does ship.
 #
-# Tools with no PyPI package and no Rust implementation are copied from their
-# own official image, so a version bump is a one-line ARG change. Versions
-# are pinned deliberately: a floating tag lets an upstream formatting or lint
-# change turn a previously green branch red without anything here having
-# changed.
+# shfmt and shellcheck have no PyPI package and no Rust implementation, so
+# they're copied from their own official image, making a version bump a
+# one-line ARG change. Versions are pinned deliberately: a floating tag lets
+# an upstream formatting or lint change turn a previously green branch red
+# without anything here having changed.
 #
 # ruff, ty, mdformat, codespell, and github-rest-api are all plain Python
 # packages, so they're installed the same way instead: `uv tool install`,
 # using this (Fedora) base's own system Python -- no separate Python runtime
 # needed.
 #
-# rustfmt, stylua, lychee, and selene are Rust binaries built once in this
-# repo's own rust-utils image and copied in from there instead of installed
-# here (rust-cicd does the same for rustfmt; jupyterhub-more does the same
-# for all four). That trades their version pins for one less
-# toolchain/compile per image, and means lint must build after rust-utils in
+# rustfmt, stylua, lychee, selene (Rust binaries built once in this repo's
+# own rust-utils image) and Go/golangci-lint (built once in this repo's own
+# golang image) are copied in from there instead of installed here
+# (rust-cicd does the same for rustfmt; jupyterhub-more does the same for
+# all five). That trades their version pins for one less toolchain/compile
+# per image, and means lint must build after rust-utils and golang in
 # images.yaml.
 ARG SHFMT_VERSION=3.13.1
 ARG SHELLCHECK_VERSION=0.11.0
-ARG GOLANGCI_LINT_VERSION=v2.6.2
 
 FROM docker.io/mvdan/shfmt:v${SHFMT_VERSION} AS shfmt
 FROM docker.io/koalaman/shellcheck:v${SHELLCHECK_VERSION} AS shellcheck
-# Also the source of Go itself: its own Go toolchain is statically linked,
-# so it runs fine copied into this (glibc) image, and it saves installing a
-# second Go toolchain of our own.
-FROM docker.io/golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine AS golangci-lint
 
 # fedora-minimal rather than this repo's usual quay.io/legendu/base:next:
 # lint is a CI-only image with no interactive use, so it has no use for
@@ -66,8 +62,7 @@ RUN dnf install -y --setopt=install_weak_deps=False python3 fish tar gzip git \
 
 COPY --from=shfmt /bin/shfmt /usr/local/bin/shfmt
 COPY --from=shellcheck /bin/shellcheck /usr/local/bin/shellcheck
-COPY --from=golangci-lint /usr/local/go /usr/local/go
-COPY --from=golangci-lint /usr/bin/golangci-lint /usr/local/bin/golangci-lint
+COPY --from=quay.io/legendu/golang:next /usr/local/go /usr/local/go
 
 # cargo/rustfmt need no C toolchain here since they only format-check or
 # run `cargo check` against already-vendored/pure-Rust crates, not link

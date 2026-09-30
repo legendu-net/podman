@@ -27,10 +27,15 @@ COPY --from=quay.io/legendu/rust-utils:next /usr/local/cargo/bin /usr/local/carg
 COPY --from=quay.io/legendu/rust-utils:next /usr/bin/nperf /usr/bin/
 COPY --from=quay.io/legendu/rust-utils:next /root/.local/share/jupyter/kernels/rust/ /usr/local/share/jupyter/kernels/rust/
 
-# GoLANG
+# GoLANG. Binaries are copied from this repo's own golang image (same
+# pattern as the Rust kernel above) rather than installed here, so this
+# toolbox's golang/golangci-lint are guaranteed to match lint/Containerfile
+# exactly -- there's only one place (golang/Containerfile) that actually
+# pins GO_VERSION/GOLANGCI_LINT_VERSION. No `icon golang -c` needed: PATH
+# already covers /usr/local/go/bin below, so its symlinks into
+# /usr/local/bin would add nothing.
 ENV PATH=/usr/local/go/bin:$PATH
-RUN icon golang -ic --copy \
-    && /scripts/purge_cache.sh
+COPY --from=quay.io/legendu/golang:next /usr/local/go /usr/local/go
 
 # The Ganymede Java kernel
 RUN icon download_github_release -r allen-ball/ganymede -k jar -K asc -o /tmp/ganymede.jar \
@@ -41,8 +46,8 @@ RUN icon download_github_release -r allen-ball/ganymede -k jar -K asc -o /tmp/ga
     && /scripts/purge_cache.sh
 
 # Lint tools for `lint_repo` (github-rest-api), for local use in this
-# toolbox. golangci-lint itself isn't installed here: `icon golang` above
-# already puts its own (newer) golangci-lint on PATH ahead of Fedora's,
+# toolbox. golangci-lint itself isn't installed here: the golang COPY above
+# already puts its own (pinned) golangci-lint on PATH ahead of Fedora's,
 # which would otherwise just pull in a second, unused Go toolchain as a
 # dependency for nothing.
 #

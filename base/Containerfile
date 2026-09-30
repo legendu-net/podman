@@ -1,6 +1,12 @@
 FROM registry.fedoraproject.org/fedora-toolbox:latest
 
 COPY scripts /scripts
+# purge_cache.sh's canonical copy lives in base-slim/Containerfile instead
+# of here, since that image is much smaller (~140MB vs this one's ~1.1GB).
+COPY --from=quay.io/legendu/base-slim:next /scripts/purge_cache.sh /scripts/purge_cache.sh
+# icon is likewise installed in base-slim/Containerfile (its ICON_VERSION ARG
+# is the single source of truth) and copied in here as a static binary.
+COPY --from=quay.io/legendu/base-slim:next /usr/local/bin/icon /usr/local/bin/icon
 
 RUN dnf copr enable -y aldantanneo/jj-vcs \
     && dnf install -y --setopt=install_weak_deps=False \
@@ -11,8 +17,6 @@ RUN dnf copr enable -y aldantanneo/jj-vcs \
         git jj-cli \
         openssh-clients rsync curl \
         neovim fish \
-    && curl -sSL https://raw.githubusercontent.com/legendu-net/icon/main/install_icon.sh \
-        | bash -s -- -v v0.51.0 \
     && /scripts/purge_cache.sh
 
 # Ghostty sets TERM=xterm-ghostty; Fedora's ncurses-term ships `ghostty` but not

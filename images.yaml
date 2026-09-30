@@ -1,21 +1,28 @@
-- base
-- rust
-- rust-utils
-# lint copies rustfmt from rust-utils above; every other FROM/COPY --from is
-# an external image, so that's its only ordering dependency in this repo.
-- lint
-# - python-portable
-- python
+# Ordering dependencies among these five: base-slim has none (FROM
+# fedora-minimal only) and must come first; base COPY --froms purge_cache.sh
+# and the icon binary from base-slim; rust and golang are both FROM
+# base-slim; rust-utils is FROM rust.
+- base-slim  # FROM fedora-minimal
+- base  # FROM fedora-toolbox, COPY base-slim
+- rust  # FROM base-slim
+- rust-utils  # FROM rust
+- golang  # FROM base-slim
+# lint copies rustfmt from rust-utils and Go/golangci-lint from golang, both
+# above; every other FROM/COPY --from is an external image, so that's its
+# only ordering dependency in this repo.
+- lint  # FROM fedora-minimal, COPY mvdan/shfmt, koalaman/shellcheck, rust-utils, golang
+# - python-portable  # FROM base
+- python  # FROM base
 # rust-cicd is FROM python:next despite the name (it also COPY --from
 # rust-utils, which already depends on rust), so it belongs here rather than
 # with the other rust-* images.
-- rust-cicd
-- python-nodejs
-- jupyterlab
-- jupyterhub
-- jupyterhub-jdk
-- jupyterhub-more
-- vscode-server
-- jupyterhub-ds
-- codespaces
-- jupyterhub-kotlin
+- rust-cicd  # FROM python, COPY rust-utils
+- python-nodejs  # FROM python
+- jupyterlab  # FROM python-nodejs
+- jupyterhub  # FROM jupyterlab
+- jupyterhub-jdk  # FROM jupyterhub
+- jupyterhub-more  # FROM jupyterhub-jdk, COPY rust-utils, golang, koalaman/shellcheck, mvdan/shfmt
+- vscode-server  # FROM jupyterhub-more
+- jupyterhub-ds  # FROM jupyterhub-more
+- codespaces  # FROM jupyterhub-more
+- jupyterhub-kotlin  # FROM jupyterhub-jdk

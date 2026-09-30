@@ -1,7 +1,7 @@
 # Ordering dependencies among these five: base-slim has none (FROM
 # fedora-minimal only) and must come first; base COPY --froms purge_cache.sh
-# from base-slim; rust and golang are both FROM base-slim; rust-utils is
-# FROM rust.
+# and the icon binary from base-slim; rust and golang are both FROM
+# base-slim; rust-utils is FROM rust.
 - base-slim  # FROM fedora-minimal
 - base  # FROM fedora-toolbox, COPY base-slim
 - rust  # FROM base-slim

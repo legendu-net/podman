@@ -17,10 +17,10 @@ jobs:
       - name: Update the Version of icon
         run: |
           uvx --from github-rest-api@latest update_version_containerfile \
-            --containerfile base/Containerfile \
+            --containerfile base-slim/Containerfile \
             --repo legendu-net/icon \
-            --pattern '-v v?\d+\.\d+\.\d+' \
-            --replace '-v v{version}' \
+            --pattern 'ICON_VERSION=v?\d+\.\d+\.\d+' \
+            --replace 'ICON_VERSION=v{version}' \
             --token ${{ secrets.ACTIONS_TOKEN }}
 
 

@@ -1,6 +1,9 @@
 FROM registry.fedoraproject.org/fedora-toolbox:latest
 
 COPY scripts /scripts
+# purge_cache.sh's canonical copy lives in base-slim/Containerfile instead
+# of here, since that image is much smaller (~140MB vs this one's ~1.1GB).
+COPY --from=quay.io/legendu/base-slim:next /scripts/purge_cache.sh /scripts/purge_cache.sh
 
 RUN dnf copr enable -y aldantanneo/jj-vcs \
     && dnf install -y --setopt=install_weak_deps=False \

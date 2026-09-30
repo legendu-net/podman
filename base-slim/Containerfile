@@ -1,0 +1,35 @@
+# syntax=docker/dockerfile:1
+#
+# Shared foundation for this repo's non-interactive, build-only images
+# (currently rust and golang) -- the fedora-minimal equivalent of
+# base/Containerfile's role for the interactive toolbox images. Common
+# bootstrapping tools live here once instead of being re-declared in every
+# downstream image's own dnf install line, so rust/Containerfile and
+# golang/Containerfile can focus on installing just their own toolchains.
+#
+# fedora-minimal rather than this repo's usual quay.io/legendu/base:next:
+# images built on this aren't used interactively, so there's no use for
+# fedora-toolbox's sudo/jj-cli/neovim/man-db/ssh-client bulk (same reasoning
+# as lint/Containerfile). purge_cache.sh's canonical copy lives here (rather
+# than in base/Containerfile) since this image is much smaller
+# (~140MB vs base:next's ~1.1GB); base/Containerfile now COPY --froms it
+# from here instead of the other way around.
+FROM registry.fedoraproject.org/fedora-minimal:latest
+
+# Kept in sync with base/Containerfile's icon pin by hand: that file
+# hardcodes its own `-v` pin (rather than using an ARG) because
+# update-version-icon.yaml's bot matches a literal `-v v\d+\.\d+\.\d+`
+# pattern there, so check_versions.py can't catch drift on this one.
+ARG ICON_VERSION=v0.51.0
+
+COPY scripts /scripts
+
+# curl, ca-certificates, sh, and coreutils come with fedora-minimal already,
+# pulled in transitively by dnf5 itself. git and tar/gzip don't: git is
+# needed by rust-utils's `git clone` of not-perf, and tar/gzip by icon's own
+# release archive as well as by `icon golang`, which shells out to the
+# system `tar` to unpack the Go toolchain.
+RUN dnf install -y --setopt=install_weak_deps=False git tar gzip \
+    && curl -sSL https://raw.githubusercontent.com/legendu-net/icon/main/install_icon.sh \
+        | bash -s -- -v ${ICON_VERSION} \
+    && /scripts/purge_cache.sh

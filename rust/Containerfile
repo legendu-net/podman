@@ -1,4 +1,10 @@
-FROM quay.io/legendu/base:next
+# base-slim (rather than this repo's usual quay.io/legendu/base:next):
+# rust/rust-utils aren't used interactively, so there's no use for
+# fedora-toolbox's sudo/jj-cli/neovim/man-db/ssh-client bulk (same reasoning
+# as lint/Containerfile and golang/Containerfile). base-slim already has
+# git (needed by rust-utils's `git clone` of not-perf) on top of
+# fedora-minimal, so this file only has to install Rust-specific packages.
+FROM quay.io/legendu/base-slim:next
 
 RUN dnf install -y --setopt=install_weak_deps=False \
         pkgconf-pkg-config openssl-devel cmake gcc gcc-c++ make \
@@ -7,5 +13,3 @@ RUN dnf install -y --setopt=install_weak_deps=False \
 ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo PATH=/usr/local/cargo/bin:$PATH
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --profile minimal -c rustfmt \
     && /scripts/purge_cache.sh
-
-COPY scripts /scripts

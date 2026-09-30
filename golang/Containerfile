@@ -1,0 +1,19 @@
+# syntax=docker/dockerfile:1
+#
+# Go toolchain + golangci-lint, installed once here and pinned via
+# GO_VERSION/GOLANGCI_LINT_VERSION so every image that needs them --
+# currently lint and jupyterhub-more -- gets the exact same versions by
+# `COPY --from`-ing this image instead of each installing (and potentially
+# drifting on) its own copy. Same pattern as rust-utils for the Rust-based
+# lint tools (stylua/lychee/selene) and rustfmt.
+#
+# base-slim (rather than this repo's usual quay.io/legendu/base:next)
+# already has `icon` and the tar/gzip it needs on top of fedora-minimal, so
+# this file only has to install Go itself.
+FROM quay.io/legendu/base-slim:next
+
+ARG GO_VERSION=1.27.1
+ARG GOLANGCI_LINT_VERSION=v2.14.0
+
+RUN icon golang -i --go-version ${GO_VERSION} --golangci-lint-version ${GOLANGCI_LINT_VERSION} \
+    && /scripts/purge_cache.sh

@@ -18,7 +18,7 @@ FROM registry.fedoraproject.org/fedora-minimal:latest
 
 # This is icon's single source of truth: base/Containerfile now
 # COPY --froms the built binary from here instead of installing its own copy.
-ARG ICON_VERSION=v0.51.0
+ARG ICON_VERSION=v0.52.0
 
 COPY scripts /scripts
 

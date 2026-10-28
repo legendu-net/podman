@@ -9,6 +9,11 @@ RUN dnf install -y --setopt=install_weak_deps=False \
         valgrind \
     && /scripts/purge_cache.sh
 
+# Google Workspace CLI
+ARG GOG_VERSION=0.47.1
+RUN icon gog -i --version ${GOG_VERSION} \
+    && /scripts/purge_cache.sh
+
 # Deno
 RUN curl -fsSL https://deno.land/install.sh | sh -s -- --no-modify-path -y \
     && mv /root/.deno/bin/deno /usr/local/bin/ \

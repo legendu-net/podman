@@ -5,8 +5,13 @@ COPY scripts /scripts
 RUN dnf install -y --setopt=install_weak_deps=False \
         fzf \
         gopass age \
-        gh \
+        gh glab \
         valgrind \
+    && /scripts/purge_cache.sh
+
+# Google Workspace CLI
+ARG GOG_VERSION=0.47.1
+RUN icon gog -i --version ${GOG_VERSION} \
     && /scripts/purge_cache.sh
 
 # Deno
@@ -19,7 +24,7 @@ RUN curl -fsSL https://deno.land/install.sh | sh -s -- --no-modify-path -y \
     && /scripts/purge_cache.sh
 
 # Rust kernel
-ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo PATH=/usr/local/cargo/bin:$PATH
+ENV RUSTUP_HOME=/usr/local/rustup PATH=/usr/local/cargo/bin:$PATH
 RUN dnf install -y --setopt=install_weak_deps=False cmake \
     && /scripts/purge_cache.sh
 COPY --from=quay.io/legendu/rust-utils:next /usr/local/rustup/ /usr/local/rustup/
